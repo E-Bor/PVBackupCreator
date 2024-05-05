@@ -10,7 +10,7 @@ import (
 
 type CopyManager struct {
 	walker      FileWalker
-	hashChecker hashChecker
+	hashChecker HashChecker
 	sortManager SortManager
 }
 

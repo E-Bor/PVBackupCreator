@@ -9,21 +9,21 @@ import (
 	"os"
 )
 
-type hashChecker struct {
+type HashChecker struct {
 	hashes       []string
 	hashFilePath string
 }
 
-func NewHashChecker(hashRootDir string, hashFileName string) hashChecker {
+func NewHashChecker(hashRootDir string, hashFileName string) HashChecker {
 	if hashRootDir == "" {
 		hashFileName = "hashes.json"
 	}
 	hashFilePath := fmt.Sprintf("%s/%s", hashRootDir, hashFileName)
 	hashes := loadHashes(hashFilePath)
-	return hashChecker{hashes: hashes, hashFilePath: hashFilePath}
+	return HashChecker{hashes: hashes, hashFilePath: hashFilePath}
 }
 
-func (h hashChecker) CheckOrCreateHash(filePath string) bool {
+func (h HashChecker) CheckOrCreateHash(filePath string) bool {
 	newFileHash := h.getFileHash(filePath)
 
 	if utils.ContainsElement(h.hashes, newFileHash) {
@@ -33,7 +33,7 @@ func (h hashChecker) CheckOrCreateHash(filePath string) bool {
 	return true
 }
 
-func (h hashChecker) SaveHashes() {
+func (h HashChecker) SaveHashes() {
 	hashesToSave, err := json.Marshal(h.hashes)
 	if err != nil {
 		panic(err)
@@ -51,7 +51,7 @@ func loadHashes(hashFilePath string) []string {
 	return hashes
 }
 
-func (h hashChecker) getFileHash(filePath string) string {
+func (h HashChecker) getFileHash(filePath string) string {
 	data, err := os.ReadFile(filePath)
 	if err != nil {
 		panic(err)
