@@ -1,7 +1,7 @@
 package internal
 
 import (
-	"awesomeProject/internal/utils"
+	"awesomeProject/pkg/utils"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
