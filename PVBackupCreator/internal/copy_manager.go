@@ -1,7 +1,7 @@
 package internal
 
 import (
-	utils2 "awesomeProject/pkg/utils"
+	"awesomeProject/internal/utils"
 	"fmt"
 	"os"
 	"sync"
@@ -36,7 +36,7 @@ func (c CopyManager) SortAndCopyFiles() {
 
 	var wg sync.WaitGroup
 	go c.watchDog(isDoneChan, &copiedFilesCounter, totalFileCounter)
-	filePathsGroups := utils2.SplitForNGroups(c.walker.GetAllFilesPaths(), 3)
+	filePathsGroups := utils.SplitForNGroups(c.walker.GetAllFilesPaths(), 3)
 	isDoneChan <- false
 
 	wg.Add(len(filePathsGroups))
@@ -65,12 +65,12 @@ func (c CopyManager) copyIfNeededWorker(
 				if err != nil {
 					panic(err)
 				}
-				utils2.CopyFile(filePath, copyPath)
+				utils.CopyFile(filePath, copyPath)
 				counterMutex.Lock()
 				*copiedFilesCounter += 1
 				counterMutex.Unlock()
 			} else {
-				utils2.CopyFile(filePath, copyPath)
+				utils.CopyFile(filePath, copyPath)
 				counterMutex.Lock()
 				*copiedFilesCounter += 1
 				counterMutex.Unlock()
