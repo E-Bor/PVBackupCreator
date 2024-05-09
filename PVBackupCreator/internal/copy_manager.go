@@ -1,7 +1,7 @@
 package internal
 
 import (
-	"awesomeProject/pkg/utils"
+	utils "awesomeProject/pkg/utils"
 	"fmt"
 	"os"
 	"sync"
