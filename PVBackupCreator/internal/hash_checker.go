@@ -44,10 +44,13 @@ func (h HashChecker) SaveHashes() {
 func loadHashes(hashFilePath string) []string {
 	data, err := os.ReadFile(hashFilePath)
 	if err != nil {
-		return []string{}
+		panic(err)
 	}
 	var hashes []string
 	err = json.Unmarshal(data, &hashes)
+	if err != nil {
+		panic(err)
+	}
 	return hashes
 }
 

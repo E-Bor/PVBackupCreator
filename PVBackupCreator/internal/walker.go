@@ -28,8 +28,8 @@ var photoOrVideoExtension = [...]string{
 	"MKV",
 }
 
-func (w FileWalker) GetAllFilesPaths() []string {
-	var allFilePaths []string
+func (w FileWalker) GetAllFilesPaths(ch *chan string) {
+	defer close(*ch)
 
 	err := filepath.Walk(w.RootDir, func(wPath string, info os.FileInfo, err error) error {
 		if wPath == w.RootDir {
@@ -38,7 +38,7 @@ func (w FileWalker) GetAllFilesPaths() []string {
 
 		if wPath != w.RootDir && !info.IsDir() {
 			if w.isPhotoOrVideoFile(wPath) {
-				allFilePaths = append(allFilePaths, wPath)
+				*ch <- wPath
 			}
 		}
 		return nil
@@ -47,7 +47,6 @@ func (w FileWalker) GetAllFilesPaths() []string {
 	if err != nil {
 		panic(err)
 	}
-	return allFilePaths
 }
 
 func (w FileWalker) isPhotoOrVideoFile(path string) bool {
